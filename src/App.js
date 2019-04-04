@@ -119,7 +119,7 @@ class App extends Component {
         <h1 className="pb-2">Submissions</h1>
         <FilterForm projectType={this.state.projectType} showApproved={this.showApproved} changeProjectType={this.changeProjectType} />
         <SubmissionList submissions={this.state.submissions} markApproved={this.markApproved} markPending={this.markPending} />
-        <Pagination />
+        <Pagination totalPages="3" currentPage="1" />
       </div>
     );
   }
