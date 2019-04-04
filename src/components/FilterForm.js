@@ -4,7 +4,7 @@ import Select from 'react-select';
 export default class FilterForm extends Component {
     render() {
         return (
-            <div className="card">
+            <div className="card mb-3">
                 <div className="card-body">
                     <div className="card-text">
                         <Select options={this.props.projectType} onChange={this.props.changeProjectType.bind(this)} />

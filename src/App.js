@@ -15,6 +15,10 @@ class App extends Component {
     "filterFields": {
       type: '',
       showApproved: false
+    },
+    "pagination": {
+      totalPages: 3,
+      currentPage: 1
     }
   }
   componentDidMount() {
@@ -29,30 +33,16 @@ class App extends Component {
     this.updateData();
   }
   componentDidUpdate(prevProps, prevState) {
-    // Update the data only if filter fields are changed
-    if (prevState.filterFields !== this.state.filterFields)
+    // Update the data only if filter fields or pagination fields are changed
+    if (prevState.filterFields !== this.state.filterFields || prevState.pagination !== this.state.pagination)
       this.updateData();
   }
 
   updateData = () => {
-    axios.get(`https://my-json-server.typicode.com/nirnejak/demo/submissions`)
+    axios.get(`https://my-json-server.typicode.com/nirnejak/demo/submissions?${this.state.filterFields.showApproved ? '' : 'status=pending' }&${this.state.filterFields.type === '' ? '' : 'type='+this.state.filterFields.type }&_page=${this.state.pagination.currentPage}`)
       .then((res) => {
         let data = res.data;
-
-        if (this.state.filterFields.showApproved) {
-          this.setState({ ...this.state, submissions: data });
-        } else {
-          // Filtering Data
-          data = data.filter(data => data.status === 'pending' ? true : false);
-          this.setState({ ...this.state, submissions: data });
-        }
-
-        if (this.state.filterFields.type !== "") {
-          this.setState({
-            ...this.state,
-            "submissions": this.state.submissions.filter(submission => submission.type === this.state.filterFields.type ? true : false)
-          })
-        }
+        this.setState({ ...this.state, submissions: data });
       })
       .catch((err) => console.log(err));
   }
@@ -113,13 +103,25 @@ class App extends Component {
     })
   }
 
+  changePage = (page) => {
+    console.log(page);
+
+    this.setState({
+      ...this.state,
+      "pagination": {
+        ...this.state.pagination,
+        currentPage: page
+      }
+    })
+  }
+
   render() {
     return (
       <div className="container py-5">
         <h1 className="pb-2">Submissions</h1>
         <FilterForm projectType={this.state.projectType} showApproved={this.showApproved} changeProjectType={this.changeProjectType} />
         <SubmissionList submissions={this.state.submissions} markApproved={this.markApproved} markPending={this.markPending} />
-        <Pagination totalPages="3" currentPage="1" />
+        <Pagination totalPages={this.state.pagination.totalPages} currentPage={this.state.pagination.currentPage} changePage={this.changePage} />
       </div>
     );
   }
