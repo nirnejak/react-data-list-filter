@@ -18,6 +18,14 @@ class App extends Component {
     }
   }
   componentDidMount() {
+    axios.get(`https://my-json-server.typicode.com/nirnejak/demo/type`)
+      .then((res) => {
+        this.setState({
+          ...this.state,
+          projectType: res.data
+        })
+      })
+      .catch((err) => console.log(err));
     this.updateData();
   }
   componentDidUpdate(prevProps, prevState) {
@@ -27,18 +35,16 @@ class App extends Component {
   }
 
   updateData = () => {
-    axios.get(`/dummy.json`)
+    axios.get(`https://my-json-server.typicode.com/nirnejak/demo/submissions`)
       .then((res) => {
         let data = res.data;
-        let resData = data["submissions"];
-        let projectType = data["type"];
 
         if (this.state.filterFields.showApproved) {
-          this.setState({ ...this.state, submissions: resData, projectType: projectType });
+          this.setState({ ...this.state, submissions: data });
         } else {
           // Filtering Data
-          resData = resData.filter(data => data.status === 'pending' ? true : false);
-          this.setState({ ...this.state, submissions: resData, projectType: projectType });
+          data = data.filter(data => data.status === 'pending' ? true : false);
+          this.setState({ ...this.state, submissions: data });
         }
 
         if (this.state.filterFields.type !== "") {
@@ -51,41 +57,40 @@ class App extends Component {
       .catch((err) => console.log(err));
   }
 
-  showApproved = (event) => {
-    this.setState({
-      ...this.state,
-      "filterFields": {
-        ...this.state.filterFields,
-        showApproved: !this.state.filterFields.showApproved
-      }
-    })
-  }
-
   markApproved = (id) => {
-    // AJAX Call Here
-    this.setState({
-      ...this.state,
-      submissions: this.state.submissions.map(submission => {
-        if (submission.id === id) {
-          submission.status = 'approved';
-        }
-        return submission;
+    let sub = this.state.submissions.filter(submission => submission.id === id ? true : false);
+    sub[0].status = 'approved';
+    axios.put(`https://my-json-server.typicode.com/nirnejak/demo/submissions/${id}`, sub[0])
+      .then(res => {
+        this.setState({
+          ...this.state,
+          submissions: this.state.submissions.map(submission => {
+            if (submission.id === id) {
+              submission.status = res.data.status;
+            }
+            return submission;
+          })
+        })
       })
-    })
+      .catch((err) => console.log(err));
   }
 
   markPending = (id) => {
-    // AJAX Call Here
-
-    this.setState({
-      ...this.state,
-      submissions: this.state.submissions.map(submission => {
-        if (submission.id === id) {
-          submission.status = 'pending';
-        }
-        return submission;
+    let sub = this.state.submissions.filter(submission => submission.id === id ? true : false);
+    sub[0].status = 'pending';
+    axios.put(`https://my-json-server.typicode.com/nirnejak/demo/submissions/${id}`, sub[0])
+      .then(res => {
+        this.setState({
+          ...this.state,
+          submissions: this.state.submissions.map(submission => {
+            if (submission.id === id) {
+              submission.status = res.data.status;
+            }
+            return submission;
+          })
+        })
       })
-    })
+      .catch((err) => console.log(err));
   }
 
   changeProjectType = (type) => {
@@ -96,6 +101,16 @@ class App extends Component {
         type: type.value
       }
     });
+  }
+
+  showApproved = (event) => {
+    this.setState({
+      ...this.state,
+      "filterFields": {
+        ...this.state.filterFields,
+        showApproved: !this.state.filterFields.showApproved
+      }
+    })
   }
 
   render() {

@@ -10,19 +10,21 @@ export default class SubmissionItem extends Component {
                         <div className="card-text">
                             <div className="row">
                                 <div className="col-lg-7">
-                                    <p><strong>{this.props.submission.member}<br /></strong></p>
+                                    <p><strong>{this.props.submission.project}</strong></p>
+                                    <p>By: {this.props.submission.member}</p>
                                 </div>
                                 <div className="col-lg-2">
                                     <p style={{ textTransform: 'capitalize', color: this.props.submission.status === 'pending' ? 'red' : 'green' }}>
                                         {this.props.submission.status}
                                     </p>
+                                    <p style={{ textTransform: 'capitalize'}}>{this.props.submission.type}</p>
                                 </div>
                                 <div className="col-lg-3 text-right">
-                                    <button className="btn btn-danger" onClick={this.props.markPending.bind(this, id)}>
+                                    <button className="btn btn-danger" onClick={this.props.markPending.bind(this, id)} title="Pending">
                                         <i className="fas fa-times"></i>
                                     </button>
                                     &nbsp;
-                                    <button className="btn btn-success" onClick={this.props.markApproved.bind(this, id)}>
+                                    <button className="btn btn-success" onClick={this.props.markApproved.bind(this, id)} title="Approve">
                                         <i className="fas fa-check"></i>
                                     </button>
                                 </div>
