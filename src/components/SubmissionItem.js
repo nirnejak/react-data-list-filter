@@ -20,11 +20,11 @@ export default class SubmissionItem extends Component {
                                     <p style={{ textTransform: 'capitalize'}}>{this.props.submission.type}</p>
                                 </div>
                                 <div className="col-lg-3 text-right">
-                                    <button className="btn btn-danger" onClick={this.props.markPending.bind(this, id)} title="Pending">
+                                    <button className="btn btn-danger" onClick={(e) => this.props.markPending(id)} title="Pending">
                                         <i className="fas fa-times"></i>
                                     </button>
                                     &nbsp;
-                                    <button className="btn btn-success" onClick={this.props.markApproved.bind(this, id)} title="Approve">
+                                    <button className="btn btn-success" onClick={(e) => this.props.markApproved(id)} title="Approve">
                                         <i className="fas fa-check"></i>
                                     </button>
                                 </div>
