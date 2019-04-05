@@ -13,7 +13,7 @@ export default class Pagination extends Component {
 
         let pages = [];
         for(let i = 1; i<= this.props.totalPages; i++) {
-            pages.push(<li className="page-item"><button className="page-link" onClick={this.props.changePage.bind(this, i)}>{i}</button></li>);
+            pages.push(<li className={`page-item ${this.props.currentPage === i ? "disabled" : ''}`}><button className="page-link" onClick={this.props.changePage.bind(this, i)}>{i}</button></li>);
         }
 
         return (
