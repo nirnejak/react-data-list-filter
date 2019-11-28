@@ -23,7 +23,7 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    axios.get(`https://my-json-server.typicode.com/nirnejak/demo/type`)
+    axios.get(`https://my-json-server.typicode.com/nirnejak/fava-related-task-1/type`)
       .then((res) => {
         this.setState({
           ...this.state,
@@ -40,7 +40,7 @@ class App extends Component {
   }
 
   updateData = () => {
-    axios.get(`https://my-json-server.typicode.com/nirnejak/demo/submissions?${this.state.filterFields.showApproved ? '' : 'status=pending'}&${this.state.filterFields.type === '' ? '' : 'type=' + this.state.filterFields.type}&_page=${this.state.pagination.currentPage}`)
+    axios.get(`https://my-json-server.typicode.com/nirnejak/fava-related-task-1/submissions?${this.state.filterFields.showApproved ? '' : 'status=pending'}&${this.state.filterFields.type === '' ? '' : 'type=' + this.state.filterFields.type}&_page=${this.state.pagination.currentPage}`)
       .then((res) => {
         let data = res.data;
         this.setState({ ...this.state, submissions: data });
@@ -51,7 +51,7 @@ class App extends Component {
   markApproved = (id) => {
     let sub = this.state.submissions.filter(submission => submission.id === id ? true : false);
     sub[0].status = 'approved';
-    axios.put(`https://my-json-server.typicode.com/nirnejak/demo/submissions/${id}`, sub[0])
+    axios.put(`https://my-json-server.typicode.com/nirnejak/fava-related-task-1/submissions/${id}`, sub[0])
       .then(res => {
         this.setState({
           ...this.state,
@@ -69,7 +69,7 @@ class App extends Component {
   markPending = (id) => {
     let sub = this.state.submissions.filter(submission => submission.id === id ? true : false);
     sub[0].status = 'pending';
-    axios.put(`https://my-json-server.typicode.com/nirnejak/demo/submissions/${id}`, sub[0])
+    axios.put(`https://my-json-server.typicode.com/nirnejak/fava-related-task-1/submissions/${id}`, sub[0])
       .then(res => {
         this.setState({
           ...this.state,
